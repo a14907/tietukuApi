@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <title>随机30张推荐的图片</title>
+    <script type="text/javascript">
+        $(function () {
+            $("#getRandomPic").click(function () {
+                $("#showDiv").empty();
+                $.post("http://api.tietuku.com/v2/api/getrandrec", { returntype: "json", key: "a5eWlsVhlGuWy5OWwpSXl5Jml2aXlshobmuXY5SXbG1vlp2bxmmTZsOblWeUaZk=" }, function (res) {
+                    var htmlStr="";
+                    for (var i in res) {
+                        htmlStr = htmlStr + '<img src="' + res[i].linkurl + '" alt="无法加载" />';
+                    }
+                    $(htmlStr).appendTo("#showDiv");
+                },"json");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div> 
+        <input type="button" value="获取30张随即图片" id="getRandomPic" />
+    </div>
+    <div id="showDiv">
+    </div>
+</body>
+</html>

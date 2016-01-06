@@ -1,0 +1,60 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <title>获取相册列表</title>
+    <style>
+        .album{
+            background-color:#0094ff;
+        }
+        .picList{
+            background-color:yellow;
+        }
+        img{
+            margin:50px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $("#getList").click(function () {
+                var index = $("#pageIndex").val();
+                $("#albums").empty();
+                $.post("http://api.tietuku.com/v2/api/getalbum", { key : 'a5eWlsVhlGuWy5OWwpSXl5Jml2aXlshobmuXY5SXbG1vlp2bxmmTZsOblWeUaZk=', returntype : 'JSON', p : " + index + " }, function (res) {
+                    $("#total").text(res.total);
+                    for (var i in res.album) {
+                        var album = res.album[i];
+                        var htmlStr = '<div class="album">相册名：<span>' + album.albumname + '</span>图片数量：<span>' + album .num+ '</span><div class="picList">';
+                        for (var p in album.pic) {
+                            htmlStr = htmlStr + '<img height="200"  src="' + album.pic[p].url + '" alt="图片加载失败" />';
+                        }
+                        htmlStr = htmlStr + " </div> </div>";
+                        $(htmlStr).appendTo("#albums");
+                    }
+                }, "json");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <label for="pageIndex">第几页：</label>
+        <input type="text" value="1" id="pageIndex" />
+        <br />
+        <input type="button" value="获取相册列表" id="getList" />
+    </div>
+    <div id="showDiv">
+        共有相册：
+        <span id="total"></span>
+        <div id="albums">
+           
+        </div>
+    </div>
+</body>
+</html>

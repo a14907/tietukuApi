@@ -1,0 +1,42 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <title>上传图片到贴图库</title>
+    <script type="text/javascript">
+        $(function () {
+            $("#st").click(function () {
+               
+                $.ajax({
+                    url: "/home/GetUpToken",
+                    async: false,
+                    cache: false,
+                    data: "albumId=1153883",
+                    success: function (data) {
+                        $("#Token").val(data);
+                    },
+                    dataType: "text",
+                    type:"POST"
+                });
+                document.forms[0].submit();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <form id="f1" action="http://up.tietuku.com/"  method="post" enctype="multipart/form-data">
+            <input type="file" id="file" name="file"/>
+            <input type="hidden" name="Token" id="Token" />
+            <input type="button" id="st" value="上传" />
+        </form>
+    </div>
+</body>
+</html>

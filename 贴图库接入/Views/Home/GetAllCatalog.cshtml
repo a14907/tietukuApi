@@ -1,0 +1,19 @@
+﻿@{ 
+    var resStr =Html.Raw(ViewBag.Data) ;
+}
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<div>
+    <label >所有的分类</label>
+    <select id="catalogList" name="cid">
+        
+    </select>
+</div>
+<script type="text/javascript">
+    var resObj = @resStr;
+    var htmlStr = "";
+    for (var i in resObj) {
+        var optItem = resObj[i];
+        htmlStr = htmlStr + '<option value="' + optItem.cid + '">' + optItem .name+ '</option> ';
+    }
+    $(htmlStr).appendTo("#catalogList");
+</script>

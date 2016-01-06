@@ -1,0 +1,49 @@
+﻿
+@{
+    Layout = null;
+}
+@using 贴图库接入.Models
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>全部图片列表</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#getPics").click(function () {
+                $("#pics").empty();
+                var cidNum = $("#catalogList").val();
+                var pageIndex = $("#p").val();
+                $.post("http://api.tietuku.com/v2/api/getnewpic", { key: "@ConfigHelper.GetOpenKey()", returntype: "json", p: pageIndex, cid: cidNum }, function (res) {
+                    $("#pageIndex").text(res.pages);
+                    var htmlStr = "";
+                    for (var i in res.pic) {
+                        var picItem = res.pic[i];
+                        htmlStr = htmlStr + '<div>' + picItem.name + '<img src="' + picItem.linkurl + '" alt="' + picItem.name + '" />< /div > ';
+                    }
+                    $(htmlStr).appendTo("#pics");
+                },"json");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        @{
+            Html.RenderAction("GetAllCatalog");
+        }
+        <label for="p">页数</label>
+        <input type="text" value="" id="p" name="p" />
+        <input type="button" value="获取" id="getPics" />
+    </div>
+    <div id="showDiv">
+        总页数：<span id="pageIndex"></span>
+        <br />
+        <div id="pics">
+            
+        </div>
+    </div>
+</body>
+</html>
